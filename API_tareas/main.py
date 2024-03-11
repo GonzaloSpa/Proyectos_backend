@@ -12,7 +12,7 @@ db_fake = []
 # Tareas(id=0, tarea="Hacer compras del mes"),
 # Tareas(id=1, tarea="Corregir detalles de la reunion") con tareas o en este caso sin las tareas 
 
-ultimo_id = len(db_fake)
+ultimo_id = len(db_fake) #definiendo el contador de ids
 
 # listando las tareas
 @app.get("/tarea/", status_code=200)
@@ -35,12 +35,12 @@ async def agregarTarea(tarea: Tareas):
     
 # actualizando tareas segun id 
 
-@app.put("/tarea/")
+@app.put("/tarea/", response_model=Tareas, status_code=200)
 async def actualizarTarea(tarea: Tareas):
     found = False
 
-    for index, saved_user in enumerate(db_fake):
-        if saved_user.id == tarea.id:
+    for index, saved_task in enumerate(db_fake):
+        if saved_task.id == tarea.id:
             db_fake[index] = tarea
             found = True
     if not found:
@@ -50,11 +50,11 @@ async def actualizarTarea(tarea: Tareas):
     
 # Borrando tareas por id 
 
-@app.delete("/tarea/{id}")        # usando query
+@app.delete("/tarea/{id}", status_code=200)        # usando query
 async def borrarTarea(id: int):
     found = False
-    for index, saved_user in enumerate(db_fake):
-        if saved_user.id == id:
+    for index, saved_task in enumerate(db_fake):
+        if saved_task.id == id:
            del db_fake[index]
            found = True           
     if not found:
